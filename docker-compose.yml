@@ -1,5 +1,5 @@
 services:
-    laravel.test:
+    customer-service:
         build:
             context: './vendor/laravel/sail/runtimes/8.4'
             dockerfile: Dockerfile
@@ -21,6 +21,7 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
+            - marketplace
         depends_on:
             - mysql
     mysql:
@@ -39,6 +40,7 @@ services:
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
+            - marketplace
         healthcheck:
             test:
                 - CMD
@@ -50,6 +52,9 @@ services:
 networks:
     sail:
         driver: bridge
+    marketplace:
+        external: true
+        name: marketplace
 volumes:
     sail-mysql:
         driver: local
